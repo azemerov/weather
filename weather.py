@@ -1,14 +1,10 @@
 import streamlit as st
 import pandas as pd
-#import numpy as np
 import time
-#from urllib2 import Request, urlopen
 from urllib.request import Request, urlopen
 import urllib
 import json
 import datetime
-
-import pandas as pd    
 
 begin = st.sidebar.date_input("Start date", value=datetime.datetime.now() - datetime.timedelta(days=1))
 end = st.sidebar.date_input("End date", value=datetime.datetime.now() + datetime.timedelta(days=1))
@@ -38,11 +34,13 @@ payload = response.read()
 data = json.loads(payload)
 df = pd.json_normalize(data['documents'])
 
-print(df)
+#print(df)
 
 if not df.empty:
   kind = st.sidebar.radio("Select data", ["Temperature", "Pressure", "Humidity"])
   kind = {"Temperature":"temp", "Pressure":"pressure", "Humidity":"humidity"}[kind]
   st.line_chart(df, x='ts', y=[kind])
+  st.write("Minimum value:", df[kind].min())
+  st.write("Maximum value:", df[kind].max())
 else:
   st.sidebar.write("No data for the selected range")
