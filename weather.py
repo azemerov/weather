@@ -40,7 +40,15 @@ if not df.empty:
   kind = st.sidebar.radio("Select data", ["Temperature", "Pressure", "Humidity"])
   kind = {"Temperature":"temp", "Pressure":"pressure", "Humidity":"humidity"}[kind]
   st.line_chart(df, x='ts', y=[kind])
+  st.write("From", begin, "to", end)
+  if df["_id"].count() == 1000:
+    st.write("reached the limit of 1000 records")
+  else:
+    st.write(df["_id"].count(), "measurements")
+  st.write("Mininmum TS:", df["ts"].min())
+  st.write("Maximum TS:", df["ts"].max())
   st.write("Minimum value:", df[kind].min())
   st.write("Maximum value:", df[kind].max())
+  #st.write(data)
 else:
   st.sidebar.write("No data for the selected range")
