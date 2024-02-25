@@ -33,6 +33,8 @@ response = urllib.request.urlopen(request)
 payload = response.read()
 data = json.loads(payload)
 df = pd.json_normalize(data['documents'])
+# use different scale for pressure : 0 = 1000 
+df['pressure'] = df['pressure'].apply(lambda x : x-1000)
 
 #print(df)
 
